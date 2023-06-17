@@ -1,0 +1,24 @@
+.num
+{
+    color: orange;
+}
+.hex
+{
+    color: blue;
+}
+.string
+{
+    color: red;
+}
+.keyword
+{
+    color: purple;
+}
+.comment
+{
+    color: gray;
+}
+.bool
+{
+    color: "red";
+}
