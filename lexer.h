@@ -25,128 +25,33 @@ SOFTWARE.*/
 #include <string>
 #include <climits>
 #include <cfloat>
+#include <cstdint>
 #include "token.h"
 using namespace std;
-int32_t hexToInt32(const string&);
-int64_t hexToInt64(const string&);
-int32_t hexToInt32(const string& s)
-{
-    int32_t res = 0;
-    int32_t p = 1;
-    for(int32_t i=s.length()-1;i>=0;i--)
-    {
-        if(s[i] >= '0' && s[i]<='9')
-        {
-            res+= (s[i]-48) * p;
-        }
-        else if(s[i] >= 'a' && s[i]<='z')
-        {
-            res+= (s[i]-87) * p;
-        }
-        p<<=4;
-    }
-    return res;
-}
-int64_t hexToInt64(const string& s)
-{
-    int64_t res = 0;
-    int64_t p = 1;
-    for(int32_t i=s.length()-1;i>=0;i--)
-    {
-        if(s[i] >= '0' && s[i]<='9')
-        {
-            res+= (s[i]-48) * p;
-        }
-        else if(s[i] >= 'a' && s[i]<='z')
-        {
-            res+= (s[i]-87) * p;
-        }
-        
-        p<<=4;
-    }
-    return res;
-}
-string addlnbreaks(string s,bool& hadErr)
-{
 
-    unsigned int k = 0;
-    bool escaped = false;//check if last char was
-    string r = "";
-    while(k<s.length())
-    {
-        if(s[k]=='\\')
-        {
-            if(escaped)
-            {
-              escaped = false;
-              r+="\\";
-            }
-            else
-              {
-              escaped = true;
-              }
-        }
-        else if(escaped)
-        {
-            if(s[k]=='n')
-            {
-                r+='\n';
-            }
-            else if(s[k]=='r')
-            {
-                r+='\r';
-            }
-            else if(s[k]=='t')
-            {
-                r+='\t';
-            }
-            else if(s[k]=='v')
-            {
-                r+='\v';
-            }
-            else if(s[k]=='b')
-            {
-                r+='\b';
-            }
-            else if(s[k]=='a')
-            {
-                r+='\a';
-            }
-            else if(s[k]=='"')
-            {
-                r+='"';
-            }
-            else
-            {
-                hadErr = true;
-                return "Unknown escape character: \\"+s.substr(k,1);
-               
-            }
-            escaped = false;
-        }
-        else if(!escaped)
-        {
-            r+=s[k];
-        }
-        k+=1;
-    }
-   if(escaped)
-   {
-       hadErr = true;
-       return "Error string contains non terminated escape chars";
-   }
-	return r;
-}
-const char* keywords[] = {"var","if","else","while","dowhile","import","return","break","continue","function","nil","for","to","step","foreach","namespace","class","private","public","extends","try","catch","throw","yield","as","gc"};
-bool isKeyword(string s)
+
+const char* keywords1[] = {"var","if","else","while","dowhile","break","continue","return","function","for","to","step","foreach","private","public","try","catch","throw","yield"};
+const char* keywords2[] = {"import","gc","extends","namespace","as","class","nil","self"};
+
+bool isKeyword(string s,int& type)
 {
-  for(size_t k=0;k<sizeof(keywords)/sizeof(char*);k+=1)
+  for(size_t k=0;k<sizeof(keywords1)/sizeof(char*);k+=1)
   {
-    if(s==(string)keywords[k])
+    if(s==(string)keywords1[k])
     {
+      type = 1;
       return true;
     }
   }
+  for(size_t k=0;k<sizeof(keywords2)/sizeof(char*);k+=1)
+  {
+    if(s==(string)keywords2[k])
+    {
+      type = 2;
+      return true;
+    }
+  }
+  
   return false;
 }
 string lstrip(string);
@@ -664,18 +569,19 @@ public:
                 }
 
                 Token i;
-                if(isKeyword(t))
+                int type;
+                if(isKeyword(t,type))
                 {
                     if(t=="if" && k!=0 && tokenlist.size()!=0)
                     {
-                        if(tokenlist[tokenlist.size()-1].type == KEYWORD_TOKEN && tokenlist[tokenlist.size()-1].content=="else")
+                        if(tokenlist[tokenlist.size()-1].type == KEYWORD1_TOKEN && tokenlist[tokenlist.size()-1].content=="else")
                         {
                             tokenlist[tokenlist.size()-1].content+=" if";
                             k = j+1;
                             continue;
                         }
                     }
-                    i.type = KEYWORD_TOKEN;
+                    i.type = (type == 1) ? KEYWORD1_TOKEN : KEYWORD2_TOKEN;
                     i.content = t;
                     i.ln = ln;
                 }

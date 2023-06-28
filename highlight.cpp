@@ -41,7 +41,7 @@ int main(int argc,const char* argv[])
     else if(tok.type == NUM_TOKEN)
       html += "<span class=\"num\">"+tok.content+"</span>";
     else if(tok.type == HEX_TOKEN)
-      html += "<span class=\"hex\">"+tok.content+"</span>";
+      html += "<span class=\"hex\">0x"+tok.content+"</span>";
     else if(tok.type == COMMENT_TOKEN)
       html += "<span class=\"comment\">"+tok.content+"</span>";
     else if(tok.type == OP_TOKEN)
@@ -50,8 +50,10 @@ int main(int argc,const char* argv[])
       html += "<span class=\"macro\">"+tok.content+"</span>";
     else if(tok.type == FLOAT_TOKEN)
       html += "<span class=\"float\">"+tok.content+"</span>";
-    else if(tok.type == KEYWORD_TOKEN)
-      html += "<span class=\"keyword\">"+tok.content+"</span>";
+    else if(tok.type == KEYWORD1_TOKEN)
+      html += "<span class=\"keyword1\">"+tok.content+"</span>";
+    else if(tok.type == KEYWORD2_TOKEN)
+      html += "<span class=\"keyword2\">"+tok.content+"</span>";
     else if(tok.type == BOOL_TOKEN)
       html += "<span class=\"bool\">"+tok.content+"</span>";
     else if(tok.type == ID_TOKEN)

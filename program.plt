@@ -1,6 +1,21 @@
+import math
+import json
+import mysql
+import libcurl
+import std/algo.plt
+import "common.plt"
+namespace std
+{
+  class Parser
+  {
+    function parse(var str)
+    {
+      return nil
+    }
+  }
+}
 # Matrix Chain Multiplication cost minimization problem
 # implemented in Plutonium
-
 
 # Simple recursive solution
 function minCost(var input,var l,var h)
@@ -48,9 +63,14 @@ function minCostDP(var input)
     }
     return tmp[0][l-1]
 }
+
 println(minCost([1,2,3,4,3],0,4))
 println(minCostDP([1,2,3,4,3]))
 println(minCost([1,2,3,4],0,3))
 println(minCostDP([1,2,3,4]))
 println(minCost([10,20,30],0,2))
 println(minCostDP([10,20,30]))
+println(0xff)
+println(0xfffff)
+println("hello world!")
+println(true and false)
