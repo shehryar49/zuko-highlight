@@ -33,7 +33,7 @@ int main(int argc,const char* argv[])
   //cout<<src;
   Lexer lex;
   vector<Token> tokens = lex.generateTokens(argv[1],src);
-  string html = "<link rel=\"stylesheet\" href=\"theme.css\">\n<pre class=\"plutoniumcode\">";
+  string html = "<link rel=\"stylesheet\" href=\"theme.css\">\n<pre class=\"zukocode\">";
   for(auto tok: tokens)
   {
     if(tok.type == STRING_TOKEN)

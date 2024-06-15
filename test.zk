@@ -1,0 +1,9 @@
+import bignum
+
+var x = bignum.bignum("1245")
+var y = bignum.bignum("4567")
+
+var result = x*y
+
+println(result)
+println(result.strval())
